@@ -10,7 +10,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -34,8 +33,6 @@ import androidx.compose.material.icons.filled.Apps
 import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.filled.ExpandLess
-import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.OpenInNew
@@ -74,6 +71,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -194,30 +192,33 @@ private fun HomeScreen(language: Language, sections: List<InfoSection>, showUnav
 
 @Composable
 private fun HomeInfoCard(section: InfoSection, showUnavailable: Boolean) {
-    var expanded by remember(section.title) { mutableStateOf(false) }
     val fields = if (showUnavailable) section.fields else section.fields.filterNot { it.value == "Not Available" }
-    Card(Modifier.fillMaxWidth().animateContentSize().clickable { expanded = !expanded }) {
+    Card(Modifier.fillMaxWidth()) {
         Column(Modifier.padding(16.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(section.title, Modifier.weight(1f), fontWeight = FontWeight.SemiBold)
-                Icon(if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore, contentDescription = null)
-            }
-            if (expanded) {
-                Spacer(Modifier.height(8.dp))
-                if (fields.isEmpty()) Text("Not Available")
-                fields.forEach { field ->
-                    Row(Modifier.fillMaxWidth().padding(vertical = 5.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text(field.label, Modifier.weight(1f))
-                        Text(field.value, Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurfaceVariant)
-                    }
-                    HorizontalDivider()
+            Text(section.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+            Spacer(Modifier.height(6.dp))
+            if (fields.isEmpty()) Text("Not Available")
+            fields.forEach { field ->
+                Row(
+                    Modifier.fillMaxWidth().padding(vertical = 5.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(field.label, Modifier.weight(1f))
+                    Text(field.value, Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
+                HorizontalDivider()
             }
         }
     }
 }
 
-private data class AppEntry(val id: String, val name: String, val category: String, val description: String, val url: String)
+private data class AppEntry(
+    val id: String,
+    val name: String,
+    val filename: String,
+    val category: String,
+    val downloadUrl: String
+)
 
 @Composable
 private fun AppsScreen(language: Language, modifier: Modifier) {
@@ -227,25 +228,31 @@ private fun AppsScreen(language: Language, modifier: Modifier) {
             val json = JSONArray(context.assets.open("apps.json").bufferedReader().use { it.readText() })
             (0 until json.length()).mapNotNull { index ->
                 val item = json.optJSONObject(index) ?: return@mapNotNull null
-                AppEntry(item.optString("id", index.toString()), item.optString("name"), item.optString("category"), item.optString("description"), item.optString("websiteUrl"))
+                AppEntry(
+                    id = item.optString("id", index.toString()),
+                    name = item.optString("name"),
+                    filename = item.optString("filename"),
+                    category = item.optString("category"),
+                    downloadUrl = item.optString("downloadUrl")
+                )
             }
         }.getOrDefault(emptyList())
     }
 
     LazyColumn(modifier.fillMaxSize(), contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        item { Text(tr(language, "Developer apps", "ডেভেলপারের অ্যাপ"), style = MaterialTheme.typography.headlineSmall) }
+        item { Text(tr(language, "Apps", "অ্যাপস"), style = MaterialTheme.typography.headlineSmall) }
         items(apps, key = { it.id }) { app ->
             Card(Modifier.fillMaxWidth()) {
-                Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.Apps, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(40.dp))
-                    Spacer(Modifier.width(14.dp))
-                    Column(Modifier.weight(1f)) {
-                        Text(app.name, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                        Text(app.category, style = MaterialTheme.typography.labelMedium)
-                        Text(app.description)
-                        TextButton(onClick = { openHttps(context, app.url) }) {
-                            Text(tr(language, "View app", "অ্যাপ দেখুন")); Icon(Icons.Default.OpenInNew, null)
-                        }
+                Column(Modifier.padding(16.dp)) {
+                    Text(app.name, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                    Text(app.category, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
+                    Text(app.filename, style = MaterialTheme.typography.bodySmall)
+                    Button(
+                        onClick = { openHttps(context, app.downloadUrl) },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Icon(Icons.Default.Download, null)
+                        Text(tr(language, "Download APK", "APK ডাউনলোড"))
                     }
                 }
             }
@@ -264,7 +271,7 @@ private fun DeveloperScreen(language: Language, sections: List<InfoSection>, mod
                 model = developerPhoto,
                 contentDescription = "MR SHADOW developer photo",
                 modifier = Modifier.size(132.dp).clip(CircleShape),
-                contentScale = androidx.compose.ui.layout.ContentScale.Crop
+                contentScale = ContentScale.Crop
             )
             Spacer(Modifier.height(8.dp))
             Text("𝙼𝚁  𝚂𝙷𝙰𝙳𝙾𝚆", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
@@ -274,7 +281,8 @@ private fun DeveloperScreen(language: Language, sections: List<InfoSection>, mod
         item { ContactCard("Telegram", "https://t.me/mr_shadow23", Icons.Default.Send) { openHttps(context, it) } }
         item {
             Button(onClick = { reportPreview = sections.asReport() }, modifier = Modifier.fillMaxWidth()) {
-                Icon(Icons.Default.Security, null); Text(tr(language, "Review & share device report", "ডিভাইস রিপোর্ট দেখে শেয়ার করুন"))
+                Icon(Icons.Default.Security, null)
+                Text(tr(language, "Review & share device report", "ডিভাইস রিপোর্ট দেখে শেয়ার করুন"))
             }
             Text(tr(language, "Sharing is user initiated; nothing is sent automatically.", "শেয়ার ব্যবহারকারী নিজে শুরু করেন; কিছু স্বয়ংক্রিয়ভাবে পাঠানো হয় না।"))
         }
@@ -347,8 +355,8 @@ private fun SettingsScreen(
             text = {
                 Text(if (kind == "privacy") tr(
                     language,
-                    "Device information stays on this device unless you choose to share it. The developer picture is loaded from the public Virtual-Mic GitHub repository. No IMEI, serial, SIM, phone, location, accounts, credentials or personal files are collected.",
-                    "আপনি শেয়ার না করলে ডিভাইসের তথ্য এই ডিভাইসেই থাকে। ডেভেলপারের ছবি public Virtual-Mic GitHub repository থেকে লোড হয়। IMEI, serial, SIM, phone, location, account, credential বা ব্যক্তিগত ফাইল সংগ্রহ করা হয় না।"
+                    "Device information stays on this device unless you choose to share it. The developer picture and app downloads use public GitHub URLs. No IMEI, serial, SIM, phone, location, accounts, credentials or personal files are collected.",
+                    "আপনি শেয়ার না করলে ডিভাইসের তথ্য এই ডিভাইসেই থাকে। ডেভেলপারের ছবি ও অ্যাপ ডাউনলোড public GitHub URL ব্যবহার করে। IMEI, serial, SIM, phone, location, account, credential বা ব্যক্তিগত ফাইল সংগ্রহ করা হয় না।"
                 ) else "MR SHADOW DEVICE INFO • Version 1.0.0")
             },
             confirmButton = { TextButton(onClick = { dialog = null }) { Text(tr(language, "Close", "বন্ধ করুন")) } }

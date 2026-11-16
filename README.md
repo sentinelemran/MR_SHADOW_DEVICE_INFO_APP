@@ -1,17 +1,11 @@
 # MR SHADOW DEVICE INFO
 
-Privacy-conscious native Android device information utility built with Kotlin and Jetpack Compose.
+Privacy-conscious Android device information utility.
 
-## Build APK
+## Build
 
-Push changes to `main` or run **Build APK** manually from the GitHub Actions tab. On a successful run, download the `mr-shadow-device-info-debug-apk` artifact. It contains `app-debug.apk`.
+Push to `main` or run **Build APK** manually in Actions. Download `mr-shadow-device-info-debug-apk` from a successful run.
 
-The workflow builds the project directly from the repository. No ZIP or Android Studio setup is required.
+## Apps
 
-## App catalog
-
-`app/src/main/assets/apps.json` is intentionally empty until real app details and HTTPS URLs are available.
-
-## Privacy
-
-The app has no internet permission, bot, report backend, or automatic report transmission. Device data is displayed locally. IMEI, serial number, phone/SIM details, location, account identifiers, credentials, and personal files are not collected. Root and bootloader unlock status show `Not Available`. Notifications are a saved preference only.
+The Apps tab lists the APKs configured in `app/src/main/assets/apps.json`. MT Manager and Termux use their GitHub Release assets; the other APK links point to the named files in the public `sentinelemran/Apps` repository. Downloading opens the HTTPS APK URL; Android handles the download/install flow, with no silent installation.

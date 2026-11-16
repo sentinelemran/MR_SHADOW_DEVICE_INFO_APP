@@ -1,16 +1,72 @@
 [
   {
-    "id": "mr-shadow-device-info",
-    "name": "MR SHADOW DEVICE INFO",
-    "category": "Device utility",
-    "description": "Privacy-conscious Android device information utility. View the project and source on GitHub.",
-    "websiteUrl": "https://github.com/sentinelemran/MR_SHADOW_DEVICE_INFO_APP"
+    "id": "apatch",
+    "name": "APatch",
+    "filename": "APatch_11282_e8e4651_HEAD-release-signed.apk",
+    "category": "Root Manager",
+    "downloadUrl": "https://raw.githubusercontent.com/sentinelemran/Apps/main/APatch_11282_e8e4651_HEAD-release-signed.apk"
   },
   {
-    "id": "virtual-mic",
-    "name": "Virtual Mic",
-    "category": "Android utility",
-    "description": "Developer's Virtual-Mic repository. Open its GitHub project page for source and project information.",
-    "websiteUrl": "https://github.com/sentinelemran/Virtual-Mic"
+    "id": "magisk",
+    "name": "Magisk",
+    "filename": "Magisk-v30.7.apk",
+    "category": "Root Manager",
+    "downloadUrl": "https://raw.githubusercontent.com/sentinelemran/Apps/main/Magisk-v30.7.apk"
+  },
+  {
+    "id": "sukisu",
+    "name": "SukiSU",
+    "filename": "SukiSU_v4.3.0-r2_41150-release.apk",
+    "category": "Root Manager",
+    "downloadUrl": "https://raw.githubusercontent.com/sentinelemran/Apps/main/SukiSU_v4.3.0-r2_41150-release.apk"
+  },
+  {
+    "id": "kernelsu-next",
+    "name": "KernelSU Next",
+    "filename": "KernelSU_Next_v3.4.2_33355-release.apk",
+    "category": "Root Manager",
+    "downloadUrl": "https://raw.githubusercontent.com/sentinelemran/Apps/main/KernelSU_Next_v3.4.2_33355-release.apk"
+  },
+  {
+    "id": "kernelsu",
+    "name": "KernelSU",
+    "filename": "KernelSU_v3.3.1_32680-release.apk",
+    "category": "Root Manager",
+    "downloadUrl": "https://raw.githubusercontent.com/sentinelemran/Apps/main/KernelSU_v3.3.1_32680-release.apk"
+  },
+  {
+    "id": "kitsune-mask",
+    "name": "Kitsune Mask",
+    "filename": "kitsune mask.apk",
+    "category": "Root Manager",
+    "downloadUrl": "https://raw.githubusercontent.com/sentinelemran/Apps/main/kitsune%20mask.apk"
+  },
+  {
+    "id": "bugjaeger",
+    "name": "Bugjeager",
+    "filename": "Bugjaeger-2.5.apk",
+    "category": "Comand Manager",
+    "downloadUrl": "https://raw.githubusercontent.com/sentinelemran/Apps/main/Bugjaeger-2.5.apk"
+  },
+  {
+    "id": "termux-api",
+    "name": "Termux Api",
+    "filename": "com.termux.api_1002.apk",
+    "category": "Terminal Executor",
+    "downloadUrl": "https://raw.githubusercontent.com/sentinelemran/Apps/main/com.termux.api_1002.apk"
+  },
+  {
+    "id": "termux",
+    "name": "Termux",
+    "filename": "com.termux_1022.apk",
+    "category": "Terminal Emulator",
+    "downloadUrl": "https://github.com/sentinelemran/Apps/releases/download/Comander/com.termux_1022.apk"
+  },
+  {
+    "id": "mt-manager",
+    "name": "MT Manager",
+    "filename": "MT.Manager.apk",
+    "category": "File Manager",
+    "downloadUrl": "https://github.com/sentinelemran/Apps/releases/download/Apps/MT.Manager.apk"
   }
 ]
