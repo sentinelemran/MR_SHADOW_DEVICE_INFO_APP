@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "id": "mr-shadow-device-info",
+    "name": "MR SHADOW DEVICE INFO",
+    "category": "Device utility",
+    "description": "Privacy-conscious Android device information utility. View the project and source on GitHub.",
+    "websiteUrl": "https://github.com/sentinelemran/MR_SHADOW_DEVICE_INFO_APP"
+  },
+  {
+    "id": "virtual-mic",
+    "name": "Virtual Mic",
+    "category": "Android utility",
+    "description": "Developer's Virtual-Mic repository. Open its GitHub project page for source and project information.",
+    "websiteUrl": "https://github.com/sentinelemran/Virtual-Mic"
+  }
+]
