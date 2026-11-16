@@ -15,9 +15,9 @@ jobs:
 
       - name: Unpack project archive
         run: |
-          test -f shadowims.zip || { echo "shadowims.zip is missing from the repository root"; exit 1; }
+          test -f shadow.zip || { echo "shadow.zip is missing from the repository root"; exit 1; }
           mkdir -p project
-          unzip -q shadowims.zip -d project
+          unzip -q shadow.zip -d project
           echo "Extracted archive contents:"
           find project -maxdepth 3 -type f | sort | head -200
 
@@ -38,7 +38,7 @@ jobs:
             ROOT="$(find project -type f \( -path '*/app/build.gradle' -o -path '*/app/build.gradle.kts' \) -print -quit | xargs -r dirname | sed 's#/app$##')"
           fi
           if [ -z "$ROOT" ]; then
-            echo "Could not find Gradle settings file or an app Gradle build file inside shadowims.zip"
+            echo "Could not find Gradle settings file or an app Gradle build file inside shadow.zip"
             exit 1
           fi
           echo "Building project at: $ROOT"
